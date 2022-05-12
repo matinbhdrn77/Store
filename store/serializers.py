@@ -41,9 +41,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class SimpleProductSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Product
         fields = ['id', 'title', 'unit_price']
+        read_only_fields = ['id', 'unit_price']
 
 
 class CartItemSerializer(serializers.ModelSerializer):

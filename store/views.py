@@ -9,8 +9,8 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 
 from .pagination import DefaultPagination
 from .filters import ProductFilter
-from .models import OrderItem, Product, Collection, Review, Cart
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer
+from .models import OrderItem, Product, Collection, Review, Cart, CartItem
+from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer
 # Create your views here.
 
 
@@ -122,3 +122,10 @@ class ReviewViewSet(ModelViewSet):
 class CartViewSet(CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
     queryset = Cart.objects.prefetch_related('items__product').all()
     serializer_class = CartSerializer
+
+
+class CartItemViewSet(ModelViewSet):
+    serializer_class = CartItemSerializer
+
+    def get_queryset(self):
+        return CartItem.objects.select_related('product').filter(cart_id=self.kwargs['cart_pk'])
