@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
@@ -145,6 +147,11 @@ class CartItemViewSet(ModelViewSet):
 class CustomerViewSet(RetrieveModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
     @action(detail=False, methods=['GET', 'PUT'])
     def me(self, request):
