@@ -3,15 +3,16 @@ from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin
-from rest_framework.filters import SearchFilter, OrderingFilter
 
-from .pagination import DefaultPagination
 from .filters import ProductFilter
+from .pagination import DefaultPagination
+from .permissions import IsAdminOrReadOnly
 from .models import OrderItem, Product, Collection, Review, Cart, CartItem, Customer
 from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer
 # Create your views here.
@@ -24,6 +25,7 @@ class ProductViewSet(ModelViewSet):
     filterset_class = ProductFilter
     search_fields = ['title', 'description', 'collection__title']
     ordering_fields = ['unit_price', 'last_update']
+    permission_classes = [IsAdminOrReadOnly]
     pagination_class = DefaultPagination
     # filterset_fields = ['collection_id']
 
@@ -103,6 +105,7 @@ class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.annotate(
         products_count=Count('products')).all()
     serializer_class = CollectionSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def destroy(self, request, *args, **kwargs):
         collection = get_object_or_404(Collection, pk=kwargs['pk'])
