@@ -1,4 +1,5 @@
 from logging import exception
+import re
 from rest_framework import serializers
 from decimal import Decimal
 from .models import Product, Collection, Review, Cart, CartItem, Customer
@@ -110,7 +111,7 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class CustomerSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
+    user_id = serializers.IntegerField(read_only=True)
     
     class Meta:
         model = Customer
