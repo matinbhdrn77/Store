@@ -8,14 +8,13 @@ from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 
 from .filters import ProductFilter
 from .pagination import DefaultPagination
 from .permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
-from .models import OrderItem, Product, Collection, Review, Cart, CartItem, Customer
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer
-# Create your views here.
+from .models import OrderItem, Product, Collection, Review, Cart, CartItem, Customer, Order
+from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, OrderSerializer
 
 
 class ProductViewSet(ModelViewSet):
@@ -132,7 +131,7 @@ class CartViewSet(CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, Gener
 
 class CartItemViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete']
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return AddCartItemSerializer
@@ -141,7 +140,7 @@ class CartItemViewSet(ModelViewSet):
         return CartItemSerializer
 
     def get_serializer_context(self):
-        return {'cart_id': self.kwargs['cart_pk'],}
+        return {'cart_id': self.kwargs['cart_pk'], }
 
     def get_queryset(self):
         return CartItem.objects.select_related('product').filter(cart_id=self.kwargs['cart_pk'])
@@ -160,10 +159,11 @@ class CustomerViewSet(ModelViewSet):
     @action(detail=True, permission_classes=[ViewCustomerHistoryPermission])
     def history(self, request, pk):
         return Response(pk)
-    
+
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
-        (customer, created) = Customer.objects.get_or_create(user_id=request.user.id)
+        (customer, created) = Customer.objects.get_or_create(
+            user_id=request.user.id)
         if request.method == 'GET':
             serializer = CustomerSerializer(customer)
             return Response(serializer.data)
@@ -172,4 +172,17 @@ class CustomerViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
-            
+
+
+class OrderViewSet(ModelViewSet):
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_staff:
+            return Order.objects.prefetch_related("items__product").all()
+
+        customer_id = Customer.object.only("id").get(user_id=user.id)
+        return Order.objects.filter(customer_id=customer_id)

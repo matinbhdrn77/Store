@@ -2,7 +2,7 @@ from logging import exception
 import re
 from rest_framework import serializers
 from decimal import Decimal
-from .models import Product, Collection, Review, Cart, CartItem, Customer
+from .models import OrderItem, Product, Collection, Review, Cart, CartItem, Customer, Order
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -112,7 +112,23 @@ class CartSerializer(serializers.ModelSerializer):
 
 class CustomerSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(read_only=True)
-    
+
     class Meta:
         model = Customer
         fields = ['id', 'user_id', 'phone', 'birth_date', 'membership']
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    product = SimpleProductSerializer()
+    
+    class Meta:
+        model = OrderItem
+        fields = ["id", "product", "quantity", "unit_price"]
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = ["id", "placed_at", "payment_status", "customer", "items"]
