@@ -14,7 +14,7 @@ from .filters import ProductFilter
 from .pagination import DefaultPagination
 from .permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
 from .models import OrderItem, Product, Collection, Review, Cart, CartItem, Customer, Order
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, OrderSerializer
+from .serializers import CreateOrderSerializer, ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer, OrderSerializer
 
 
 class ProductViewSet(ModelViewSet):
@@ -175,8 +175,15 @@ class CustomerViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateOrderSerializer
+        return OrderSerializer
+
+    def get_serializer_context(self):
+        return {"user_id": self.request.user.id}
 
     def get_queryset(self):
         user = self.request.user
@@ -184,5 +191,5 @@ class OrderViewSet(ModelViewSet):
         if user.is_staff:
             return Order.objects.prefetch_related("items__product").all()
 
-        customer_id = Customer.object.only("id").get(user_id=user.id)
+        customer_id = Customer.objects.only("id").get(user_id=user.id)
         return Order.objects.filter(customer_id=customer_id)
