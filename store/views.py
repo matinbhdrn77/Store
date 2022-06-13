@@ -143,7 +143,7 @@ class OrderViewSet(ModelViewSet):
         return Order.objects.filter(customer_id=customer_id)
 
 
-class ProdcutImageViewSet(ModelViewSet):
+class ProductImageViewSet(ModelViewSet):
     serializer_class = ProductImageSerializer
 
     def get_serializer_context(self):

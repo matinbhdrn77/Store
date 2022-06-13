@@ -6,19 +6,23 @@ name = "pypi"
 [packages]
 django = "*"
 django-debug-toolbar = "*"
-mysqlclient = "*"
 djangorestframework = "*"
 drf-nested-routers = "*"
 django-filter = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 pillow = "*"
 django-cors-headers = "*"
 django-templated-mail = "*"
+mysqlclient = "*"
+redis = "*"
+celery = "*"
+flower = "*"
 
 [dev-packages]
-autopep8 = "*"
+pytest = "*"
+pytest-django = "*"
 
 [requires]
-python_version = "3.10.1"
+python_version = "3.10"

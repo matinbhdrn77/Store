@@ -22,11 +22,11 @@ class InventoryFilter(admin.SimpleListFilter):
 
 class ProductImageInline(admin.TabularInline):
     model = models.ProductImage
-    readonly_fields = ('thumbnail',)
+    readonly_fields = ['thumbnail']
 
     def thumbnail(self, instance):
         if instance.image.name != '':
-            return format_html(f'<img src="{instance.image.url}" class="thumbnail"')
+            return format_html(f'<img src="{instance.image.url}" class="thumbnail" />')
         return ''
 
 
@@ -37,13 +37,13 @@ class ProductAdmin(admin.ModelAdmin):
         'slug': ['title']
     }
     actions = ['clear_inventory']
+    inlines = [ProductImageInline]
     list_display = ['title', 'unit_price',
                     'inventory_status', 'collection_title']
     list_editable = ['unit_price']
     list_filter = ['collection', 'last_update', InventoryFilter]
     list_per_page = 10
     list_select_related = ['collection']
-    inlines = [ProductImageInline]
     search_fields = ['title']
 
     def collection_title(self, product):
