@@ -45,11 +45,9 @@ To set up this project on your computer:
 ### Models
 Contains User Model extension with additional fields.
 
+**USER 
 Fields:
-* User - From abstract models
-- Email : register with email
-* date_of_birth - user's birth date
-* about - additional info about the user
+* Email : register with email
 
 ### Post 
 Contains all post info.
