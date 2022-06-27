@@ -47,7 +47,7 @@ Contains User Model extension with additional fields.
 
 Fields:
 * User - From abstract models
-** Email : register with email
+- Email : register with email
 * date_of_birth - user's birth date
 * about - additional info about the user
 
