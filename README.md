@@ -45,7 +45,7 @@ To set up this project on your computer:
 ### Models
 Contains User Model extension with additional fields.
 
-#### USER 
+##### 1- USER 
 Fields:
 * Email : register with email
 
