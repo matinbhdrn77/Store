@@ -6,10 +6,9 @@
 - [Apps Implementation](#apps-implementation)
   * [Core](#core)
     + [Models](#models)
-    + [Post](#post)
-    + [Comment](#comment)
-    + [Like](#like)
-    + [Following](#following)
+    + [Admin Conf](#admin-conf)
+    + [Serializers](#serializers)
+    + [Signals](#signals)
   * [Views](#views)
     + [index](#index)
     + [post_comment](#post-comment)
@@ -41,30 +40,29 @@ To set up this project on your computer:
         python manage.py migrate
     ```
 # Apps Implementation
+
 ## Core
+plugable app to connect store app to another apps. so store app can work independently
+
 ### Models
 Contains User Model extension with additional fields.
-
-##### 1- USER 
 Fields:
-* Email : register with email
+* User : register with Email
 
-### Post 
-Contains all post info.
-
+### Admin Conf 
 Fields:
-* user - who posted the post
-* content - post's inner text
-* date - post's publication date
+* UserAdmin - add user with email, password, last and first name
+* CustomProductAdmin - admin can add products with tag and image inlines
+* TagInline - inline class for CustomProductAdmin and admin can search for tags
 
-### Comment
-Contains all comment info.
-
+### Serializers
+serializers for creating and retrieving users with djoser
 Fields:
-* user - who posted the comment
-* post - the post which is being commented
-* content - comment's inner text
-* date - comment's publication date
+* UserCreateSerializer
+* UserSerializer
+
+### Signals 
+create reciever signal handlers. recieve signal when an order create
 
 ### Like 
 Contains all like info.
@@ -80,12 +78,6 @@ Fields:
     4. heart
     5. thanks
 
-### Following 
-Contains all who follows who info.
-
-Fields:
-* user - user who is following
-* user_followed - user who is being followed
 
 ## Views
 ### index
