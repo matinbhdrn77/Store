@@ -46,6 +46,7 @@ plugable app to connect store app to another apps. so store app can work indepen
 
 ### Models
 Contains User Model extension with additional fields.
+
 Fields:
 * User : register with Email
 
