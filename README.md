@@ -56,7 +56,8 @@ Fields:
 * TagInline - inline class for CustomProductAdmin and admin can search for tags
 
 ### Serializers
-serializers for creating and retrieving users with djoser
+serializers for creating and retrieving users with djoser.
+
 Fields:
 * UserCreateSerializer
 * UserSerializer
