@@ -10,7 +10,7 @@
     + [Serializers](#serializers)
     + [Signals](#signals)
   * [Likes](#likes)
-    + [Models](#models)
+    + [Models](#models-1)
   * [Store](#store)
     + [Models](#models)
     + [Admin Conf](#admin-conf)
