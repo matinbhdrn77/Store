@@ -9,18 +9,13 @@
     + [Admin Conf](#admin-conf)
     + [Serializers](#serializers)
     + [Signals](#signals)
-  * [Views](#views)
-    + [index](#index)
-    + [post_comment](#post-comment)
-    + [user_profile](#user-profile)
-    + [edit_profile](#edit-profile)
-    + [like](#like)
-    + [following](#following)
-    + [follow_unfollow](#follow-unfollow)
-    + [login_view](#login-view)
-    + [logout_view](#logout-view)
-    + [register](#register)
-  * [Tests](#tests)
+  * [Likes](#likes)
+    + [Models](#models)
+  * [Store](#store)
+    + [Models](#models)
+    + [Admin Conf](#admin-conf)
+    + [Serializers](#serializers)
+    + [Signals](#signals)
 
 # Introduction
 ## Description and requirements
@@ -47,57 +42,61 @@ plugable app to connect store app to another apps. so store app can work indepen
 ### Models
 Contains User Model extension with additional fields.
 
-Fields:
+Classes:
 * User : register with Email
 
 ### Admin Conf 
-Fields:
-* UserAdmin - add user with email, password, last and first name
-* CustomProductAdmin - admin can add products with tag and image inlines
-* TagInline - inline class for CustomProductAdmin and admin can search for tags
+Classes:
+* UserAdmin : add user with email, password, last and first name
+* CustomProductAdmin : admin can add products with tag and image inlines
+* TagInline : inline class for CustomProductAdmin and admin can search for tags
 
 ### Serializers
 serializers for creating and retrieving users with djoser.
 
-Fields:
+Clasess:
 * UserCreateSerializer
 * UserSerializer
 
 ### Signals 
 create reciever signal handlers. recieve signal when an order create
 
-### Like 
-Contains all like info.
 
-Fields:
-* user - who liked a post/comment
-* post - the post which has been liked
-* comment - the comment which has been liked
-* emoji_type - the emoji used as a like, available emojis:
-    1. like
-    2. dislike
-    3. smile
-    4. heart
-    5. thanks
+## Likes
+app that can handle liked items, ...
+
+### Models
+Classes:
+* LikedItem : foreign key to django builtin content type so we can use it for any other models
 
 
-## Views
-### index
-Here you can:
-* View all posts
-* Edit posts (if you are the post's creator; only for logged-in users)
-* Delete posts (if you are the post's creator; only for logged-in users)
-* Like them (only for logged-in users)
-* Create a new post (only for logged-in users)
-* View all comments (only for logged-in users)
-* Create a comment (only for logged-in users)
-* Delete a comment (if you are the comment's creator; only for logged-in users)
-* Edit a comment (if you are the comment's creator; only for logged-in users)
+## Store
+our main app for project. all necessary configuration is here
 
-### post_comment 
-(only for logged-in users)
+### Models 
+Classes:
+* Product : a product is just in one collection and can be in multiple promotions
+* Collection : every collection has a featured peoduct
+* ProductImage : every product can have a multiple images
+* Customer : 
+    1. customer can be in gold, silver or bronze membership
+    2. admin have access to customer first and last name through display decorator
+    3. order customers base on user first name and last name
+    4. add custom permission so customer can view history
 
-Controls saving of a new post/comment (only POST method allowed).
+
+### Admin Conf 
+Classes:
+* ProductAdmin :
+    1. when user add product can search for products in line
+    2. prepolate a slug for each product
+    3. clear inventory for a specific product
+    4. can filter base on collections, last update and inventory
+* CollectionAdmin : display collections and number of products in it
+* CustomerAdmin : 
+    1. display customers with their member ship and orders (link to their orders)
+    2. optimize searching for names
+* OrderAdmin: admin user can add orders with items(products) in it
 
 ### user_profile
 (only for logged-in users)
