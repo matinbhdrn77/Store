@@ -12,10 +12,10 @@
   * [Likes](#likes)
     + [Models](#models-1)
   * [Store](#store)
-    + [Models](#models)
-    + [Admin Conf](#admin-conf)
-    + [Serializers](#serializers)
-    + [Signals](#signals)
+    + [Models](#models-2)
+    + [Admin Conf](#admin-conf-1)
+    + [Serializers](#serializers-1)
+    + [Signals](#signals-1)
 
 # Introduction
 ## Description and requirements
@@ -98,31 +98,22 @@ Classes:
     2. optimize searching for names
 * OrderAdmin: admin user can add orders with items(products) in it
 
-### user_profile
-(only for logged-in users)
+### Serializers
+Classes:
+* CollectionSerializer : serialize collections 
+* ProductImageSerializer : crate ProductImage object in this serializer
+* ProductSerializer : serialize products 
+* ReviewSerializer : create Review object for products 
+* SimpleProductSerializer : just for showing products in a simpler way in cart items endpoint
+* CartItemSerializer : show items in cart with quantitiy and total price
+* CartSerializer : show each items (CartItemSerializer) and total price for all items
+* AddCartItemSerializer : a serializer for adding products to cart and if there is no cart for items, create a cart
+* UpdateCartItemSerializer : just update quantity for items
+* CustomerSerializer : serialize custommers
+* CreateOrderSerializer : create cart dd order and items in it then save items in database and delete cart
 
-Here you can:
-* View user's bio
-* View all user's posts
-* Edit posts (if you are the post's creator)
-* Delete posts (if you are the post's creator)
-* Like them 
-* View all comments on user's posts
-* Create a comment
-* Delete a comment (if you are the comment's creator)
-* Edit a comment (if you are the comment's creator)
-* Follow the user (if you are not this user)
-* Click on edit profile button (if you are this user)
-
-### edit_profile
-(only for logged-in users)
-
-Here you can:
-* Change your *name*
-* Change your *birthdate*
-* Change your *about info*
-* Change your *profile picture*
-* Change your *country*
+### signals
+create customer when a new user created
 
 ### like
 (only for logged-in users)
