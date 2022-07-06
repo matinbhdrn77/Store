@@ -11,7 +11,7 @@
     + [Signals](#signals)
   * [Likes](#likes)
     + [Models](#models-1)
-  * [Store](#store)
+  * [Store](#store-1)
     + [Models](#models-2)
     + [Admin Conf](#admin-conf-1)
     + [Serializers](#serializers-1)
@@ -20,7 +20,7 @@
     + [Permissions](#permissions)
     + [Tests](#tests)
     + [Other Features](#other-features)
-  * [Store](#store)
+  * [Tags](#tags)
     + [Models](#models-3)
     + [Admin Conf](#admin-conf-2)
 
