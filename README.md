@@ -20,6 +20,9 @@
     + [Permissions](#permissions)
     + [Tests](#tests)
     + [Other Features](#other-features)
+  * [Store](#store)
+    + [Models](#models-3)
+    + [Admin Conf](#admin-conf-2)
 
 # Introduction
 ## Description and requirements
@@ -152,7 +155,9 @@ Classes:
 * ViewCustomerHistoryPermission : customer can see just his history
 
 ### Tests
-*
+Classes:
+* TestCreateCollection : test creating collections api
+* TestRetrieveCollection :test retrieving colletion api
 
 ### Other Features
 Fields:
@@ -161,30 +166,18 @@ Fields:
     ```python
         python manage.py seed_db
     ```
+* Validators : file sizes must be at most 500 kb 
 
 
-### follow_unfollow
-(only for logged-in users)
+## Tags
+app that can handle tags for products
 
-Controls following/unfollowing users (only POST method allowed).
+### Models
+Classes:
+* TaggedItemManager : a model manager that returns tags for each item
+* Tag : model with just 1 char field for name of the tag
+* TaggedItem : every tagged item have tag label and product
 
-### login_view
-Controls logging in.
-
-### logout_view
-Controls logging out.
-
-### register
-Controls registration.
-
-## Tests
-There are 4 main test cases:
-* ModelsTestCase - checks database integrity
-* FormsTestCase - makes sure that forms work correctly
-* ViewsTestCase - makes sure that all views work correctly and give proper responses
-* FrontEndTestCase - uses Selenium to simulate user interaction with every element on the page
-
-Test requirements can be viewed in [test requirents.md](https://github.com/serwatka-w-proszku/CS50-Network/blob/master/test%20requirements.md)
-
----
-Special thanks to Brian and the entire CS50 team for making learning easy, engaging, and free.
+### Admin Conf
+Classes:
+* TagAdmin : search base on label field
