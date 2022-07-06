@@ -16,6 +16,10 @@
     + [Admin Conf](#admin-conf-1)
     + [Serializers](#serializers-1)
     + [Signals](#signals-1)
+    + [Views](#views)
+    + [Permissions](#permissions)
+    + [Tests](#tests)
+    + [Other Features](#other-features)
 
 # Introduction
 ## Description and requirements
@@ -30,10 +34,16 @@ To set up this project on your computer:
     ```python
         pipenv install
     ```
-3. Make a migration
+3. Manage your database in storefront.settings.DATABASES
+4. Make a migration
     ```python
         python manage.py migrate
     ```
+5. Run server
+    ```python
+        python manage.py runserver
+    ```
+    
 # Apps Implementation
 
 ## Core
@@ -110,28 +120,48 @@ Classes:
 * AddCartItemSerializer : a serializer for adding products to cart and if there is no cart for items, create a cart
 * UpdateCartItemSerializer : just update quantity for items
 * CustomerSerializer : serialize custommers
-* CreateOrderSerializer : create cart dd order and items in it then save items in database and delete cart
+* CreateOrderSerializer : create cart add order and items in it then save items in database and delete cart (transaction atomic for integrity)
 
-### signals
+### Signals
 create customer when a new user created
 
-### like
-(only for logged-in users)
+### Views
+Classes:
+* ProductViewSet : 
+    1. model view set for handling products api
+    2. search products base on title, description and unit price range
+    3. order products base on unit price and updated time
+    4. admin can't delete product if it's in ordering process
+* CollectionViewSet :
+    1. model vview set for handling collections api
+    2. admin can't delete a collection if there is products in that collection
+* ReviewViewSet : model view set for handling reviews for each product
+* CartViewSet : generic view set for creating, retrieving and deleting cart
+* CartItemViewSet : model veiw set for handling items in each cart
+* CustomerViewSet : customer can see his profile and history
+* OrderViewSet:
+    1. model view set for handling orders
+    2. just admin can delete and update orders
+    3. admin can see all orders but each customer can just see his orders
+* ProductImageViewSet : model view set for handling images
 
-Controls all actions regarding liking:
-* Add a new like
-* Change a like's emoji
+### Permissions
+Classes:
+* IsAdminOrReadOnly : normall user can just visit api's in safe method
+* FullDjangoModelPermissions : 
+* ViewCustomerHistoryPermission : customer can see just his history
 
-### following
-(only for logged-in users)
+### Tests
+*
 
-Here you can:
-* View all posts created by followed users
-* Like them
-* View all comments
-* Create a comment
-* Delete a comment (if you are the comment's creator)
-* Edit a comment (if you are the comment's creator)
+### Other Features
+Fields:
+* Pagination : show 10 item per page
+* Management : add default data to your database
+    ```python
+        python manage.py seed_db
+    ```
+
 
 ### follow_unfollow
 (only for logged-in users)
